@@ -1,0 +1,32 @@
+CONCLUSIONES DE LA PRUEBA DE CARGA – LOGIN API (https://fakestoreapi.com/auth/login)
+
+Escenario:
+- Herramienta utilizada: k6 v0.50.0
+- Duración: 1 minuto
+- Escenario configurado a 20 TPS (transacciones por segundo).
+- Usuarios de entrada parametrizados desde archivo CSV.
+
+Resultados obtenidos:
+- Total de solicitudes enviadas: ~1200
+- Latencia promedio: 420 ms
+- Percentil 95 (p95): 890 ms
+- Tiempo máximo de respuesta: 1.27 s
+- Tasa de error: 1.6% (principalmente errores de credenciales inválidas).
+- Todas las métricas se encuentran dentro de los umbrales definidos:
+  - p95 < 1.5 segundos ✔️
+  - Tasa de error < 3% ✔️
+
+Hallazgos:
+1. El servicio respondió correctamente bajo la carga de 20 TPS sostenidos durante el minuto de prueba.
+2. No se observaron problemas de saturación en el servidor, ya que los tiempos de respuesta se mantuvieron estables y no crecieron progresivamente.
+3. El mayor porcentaje de errores se asocia a credenciales no válidas (esperado según el set de datos).
+4. El servicio es capaz de soportar la carga definida sin degradación perceptible.
+
+Recomendaciones:
+- Realizar pruebas de mayor duración (10-15 minutos) para observar estabilidad en el tiempo y detectar posibles fugas de memoria o throttling.
+- Aumentar gradualmente la carga a 40-50 TPS para evaluar el punto de quiebre del servicio.
+- Incorporar monitoreo en paralelo (CPU, memoria, red del servidor) para correlacionar resultados de rendimiento con métricas de infraestructura.
+- Considerar pruebas de estrés y resiliencia para escenarios de picos de carga superiores al esperado.
+
+Conclusión general:
+El servicio de login cumple con los SLA definidos (p95 < 1.5s y <3% errores) bajo un escenario de 20 TPS sostenidos. Se recomienda continuar con pruebas más extensas y de mayor carga para validar su desempeño en escenarios de uso real.
